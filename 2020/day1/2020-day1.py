@@ -7,12 +7,12 @@ def main():
         entries = f.read().splitlines()
     entries = [int(el) for el in entries]
 
-    e, f = part1(entries)
+    e, f = part1_b(entries)
     assert (e+f) == 2020, "elements don't sum to 2020"
     print("---Part 1---")
     print("product = {0}\n".format(e*f))
 
-    e, f, g = part2(entries)
+    e, f, g = part2_b(entries)
     assert (e+f+g) == 2020, "elements don't sum to 2020"
     print("---Part 2---")   
     print("product = {0}\n".format(e*f*g))
