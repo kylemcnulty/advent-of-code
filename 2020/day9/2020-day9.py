@@ -1,78 +1,57 @@
 import itertools
-from collections import Counter
 input_filename = "input.txt"
+PREAMBLE_LENGTH = 25
 
-def main(adapters, device_rating):
+def main(numbers):
 	print("---Part 1---")
-	part1(adapters, device_rating)
+	invalid_number = part1(numbers)
 	
-	#print("---Part 2---")
-	#part2(adapters)
+	print("---Part 2---")
+	part2(numbers, invalid_number)
 
-def part1(adapters, device_rating):
-	# Check order
-	valid = check_valid(adapters)
-	if not valid:
-		print("ERROR: Invalid order\n")
-		return
+def part1(numbers):
+	invalid_number = None
+	#print("Numbers: {0}".format(numbers))
 
-	# Count differences between adapters	
-	diffs = []
-	for i in range(0,len(adapters)-1):
-		d = adapters[i+1]["output"] - adapters[i]["output"]
-		diffs.append(d)
-
-	diff3_cnt = diffs.count(3)
-	diff1_cnt = diffs.count(1)
-	result = diff1_cnt * diff3_cnt
-	print(result)
-
-def part2(adapters):
-	pass
-
-def check_valid(adapters):
-	for i in range(0,len(adapters)-1):
-		print("i: {0} --> i+1: {1}".format(adapters[i],adapters[i+1]))
-		if adapters[i]["output"] not in adapters[i+1]["inputs"]:
-			return False
+	for i,num in enumerate(numbers):
+		if i < PREAMBLE_LENGTH:
+			continue # skip to the first number after the preamble
 		else:
-			return True
+			preamble = numbers[i-PREAMBLE_LENGTH:i]
+			#print("\ni={0}  Preamble: {1}".format(i, preamble))
+
+			preamble_combos = list(itertools.combinations(preamble, 2))
+			#print("Preamble Combos: {0}".format(preamble_combos))
+			preamble_sums = [(c[0]+c[1]) for c in preamble_combos]
+			#print("Preamble Sums: {0}".format(preamble_sums))
+
+			if num not in preamble_sums:
+				invalid_number = num
+				break
+
+	#print("Result: {0}\n".format(num))
+	return invalid_number
+
+def part2(numbers, invalid_number):
+
+	for w in range(1, len(numbers)):
+		for i in range(0, len(numbers)-w+1):
+			cont_sublist = numbers[i:i+w]
+			if sum(cont_sublist) == invalid_number:
+				#print("Matching Sublist: {0}".format(cont_sublist))
+				result = max(cont_sublist) + min(cont_sublist)
+				print("Result: {0}".format(result))
+				break
 
 def load_input_file():
 	# Load program values
-	adapter_ratings = []
+	numbers = []
 	with open(input_filename) as f:
-		adapter_ratings = f.read().splitlines()
+		numbers = f.read().splitlines()
 	
-	# Precompute the valid inputs for these adapters
-	adapter_ratings = [int(x) for x in adapter_ratings]
-	adapters = []
-	for r in adapter_ratings:
-		#r = int(r)
-		a = {
-			"inputs": list(range(r-3,r)),
-			"output": r,
-			"type": "adapter"
-		}
-		adapters.append(a)
-
-	device_rating = max(adapter_ratings) + 3
-
-	adapters.append({
-		"inputs": [0],
-		"output": 0,
-		"type": "outlet"
-	})
-	adapters.append({
-		"inputs": list(range(device_rating-3, device_rating)),
-		"output": device_rating,
-		"type": "device"
-	})
-
-	adapters = sorted(adapters, key=lambda k: k["output"])
-
-	return adapters, device_rating
+	numbers = [int(x) for x in numbers]
+	return numbers
 
 if __name__=="__main__":
-	adapters, device_rating = load_input_file()
-	main(adapters, device_rating)
+	numbers = load_input_file()
+	main(numbers)
