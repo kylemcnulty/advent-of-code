@@ -1,5 +1,5 @@
 import time
-input_filename = "test_input.txt"
+input_filename = "input.txt"
 
 def part1(depart, busses):
 	busses = [int(bus) for bus in busses if bus != 'x'] # remove 'x' values from list
@@ -26,31 +26,18 @@ def part2(bus_schedule):
 	cleaned_busses = [int(bus) for bus in bus_schedule if bus != 'x'] # remove 'x' values from list
 	max_bus = max(cleaned_busses) # 
 	max_bus_time_offset = bus_schedule.index(str(max_bus))
-
-	# busses = []
-	# for i,bus in enumerate(bus_schedule):
-	# 	if bus != 'x':
-	# 		d = {'bus': int(bus), 'i': i}
-	# 		busses.append(d)
-
-	# max_bus = max([x['bus'] for x in bussess])
-	# max_bus_time_offset = bus_schedule.index(str(max_bus))
-
-	#print(max_bus_time_offset)
-	#first_bus = int(bus_schedule[0])
-	#first_bus_time_offset = bus_schedule.index(str(first_bus))
 	itime = 0
 	running = True
-	#print(itime)
+	bs = list(enumerate(bus_schedule)) # precompute this to doing it every iteration of the while loop
 
 	while running:
-		#print("Time: {0}".format(itime))
+		print("Time: {0}".format(itime))
 		# Rewind to the last time the first bus departed
 		itime = itime - max_bus_time_offset
-		#print("Rewound time: {0}".format(itime))
+		print("Rewound time: {0}".format(itime))
 
 		valid_time = True
-		for time_offset,bus in enumerate(bus_schedule):
+		for time_offset,bus in bs:
 			if bus is not 'x':
 				time_since_last = (itime + time_offset) % int(bus)
 				#print("Bus: {0}  Time since last: {1}".format(bus, time_since_last))
@@ -66,7 +53,7 @@ def part2(bus_schedule):
 			itime += max_bus # increment itime by the largest bus for efficiency
 
 		#print("Valid? {0}\n".format(valid_time))
-		#time.sleep(1)
+		time.sleep(1)
 
 	print("Result: {0}".format(itime))
 	return itime
@@ -109,3 +96,15 @@ def load_input_file():
 
 if __name__=="__main__":
 	main()
+
+
+
+
+	# busses = []
+	# for i,bus in enumerate(bus_schedule):
+	# 	if bus != 'x':
+	# 		d = {'bus': int(bus), 'i': i}
+	# 		busses.append(d)
+
+	# max_bus = max([x['bus'] for x in bussess])
+	# max_bus_time_offset = bus_schedule.index(str(max_bus))
