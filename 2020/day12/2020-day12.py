@@ -1,6 +1,3 @@
-import itertools
-import numpy as np
-import time
 import math
 input_filename = "input.txt"
 
