@@ -23,8 +23,8 @@ def build_tree(equation):
 	root = tree.create_node(tag='empty')
 	print(root)
 	tree.show()
-	last_node = None
-	last_tree = None
+	nodes = [] # stack for nodes
+	trees = [] # stack for trees
 
 	current_node = root
 	for op in items:
@@ -58,7 +58,9 @@ def build_tree(equation):
 			current_node = new
 		elif op.strip() is '(':
 			print("Creating a new tree")
-			last_node, last_tree = current_node, tree
+			nodes.append(current_node) # push current node onto stack to save it
+			trees.append(tree) # push current tree onto stack to save it
+			
 			# Create the new tree with
 			new_tree = Tree()
 			node = new_tree.create_node(tag='empty')
@@ -66,10 +68,12 @@ def build_tree(equation):
 			current_node = node
 		elif op.strip() is ')':
 			print("Close the current tree and paste it onto the last tree")
+			# Pop last tree and node off the stack to know where to paste
+			last_tree = trees.pop()
+			last_node = nodes.pop()
 			last_tree.paste(last_node.identifier, tree)
 			current_node = last_node
 			tree = last_tree
-
 		tree.show()
 
 	print("\n --- Final Tree ---")
