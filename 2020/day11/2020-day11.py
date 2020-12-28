@@ -29,8 +29,6 @@ def part1(seat_map):
 	new_seat_map = np.copy(seat_map)
 	new_seat_map[new_seat_map != ''] =  '' # reset every value in matrix to ''
 
-	previous_map = None
-
 	while running:
 		#print("----- Round {0} -----".format(rounds), end='')
 
@@ -94,17 +92,15 @@ def load_input_file():
 	values = []
 	with open(input_filename) as f:
 		values = f.read().splitlines()
-	global NUM_ELEMENTS 
-	NUM_ELEMENTS = x_size * y_size
-
-	seat_map = np.zeros(shape=(y_size+2,x_size+2), dtype=str)
-	
+	y_size = len(values)
+	x_size = len(values[0])
+	seat_map = np.zeros(shape=(y_size+2,x_size+2), dtype=str)	
 	for y in range(0, y_size):
 		for x in range(0, x_size):
 			seats = []
 			seats[:] = values[y]
 			seat = values[y][x]
-			seat_map[y+1][x+1] = seat # value_map[seat]
+			seat_map[y+1][x+1] = seat
 
 	return seat_map
 
