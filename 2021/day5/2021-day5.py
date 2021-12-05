@@ -78,7 +78,7 @@ def part2(lines):
                 else:
                     vmap[point] = 1
         else:
-            # Don't ignore horizontal lines
+            # Don't ignore diagonal lines
             x_incr = 1
             if x2 < x1: x_incr = -1
             y_incr = 1
