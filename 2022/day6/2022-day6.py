@@ -4,9 +4,8 @@ def part1and2(subr, num_unique):
     marker_pos = None
     for i in range(num_unique, len(subr)+1):
         a = subr[i-num_unique:i]
-        a_unq = set(list(a))
 
-        if len(a_unq) == len(a):
+        if len(set(a)) == num_unique:
             marker_pos = i
             break
     return marker_pos
