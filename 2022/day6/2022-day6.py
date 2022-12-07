@@ -10,9 +10,6 @@ def part1and2(subr, num_unique):
             break
     return marker_pos
 
-def part2(inp):
-    pass
-
 def main():
     subr = load_input_file()
     
